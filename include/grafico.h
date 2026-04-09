@@ -1,7 +1,8 @@
+#include "criatura.h"
+
 #ifndef GRAFICO_H
 #define GRAFICO_H
 
-void imprimir_g(void);
+void atualizar_interface(criatura_t criaturas[], cor_t *cor);
 
 #endif
-

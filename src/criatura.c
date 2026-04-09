@@ -1,6 +1,6 @@
 #include "criatura.h"
 #include "stdio.h"
 
-void imprimir_c(void){
-	printf("criatura\n");
-}
+void processar(criatura_t criaturas[], cor_t *cor) {}
+
+criatura_t* gerar_criaturas(uint16_t tamanho) {};

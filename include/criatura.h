@@ -12,6 +12,14 @@ typedef struct{
     uint16_t i_proximo;
 } criatura_t;
 
-void imprimir_c(void);
+typedef struct {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} cor_t;
+
+void processar(criatura_t *criaturas, cor_t *cor);
+
+criatura_t* gerar_criaturas(uint16_t tamanho);
 
 #endif
