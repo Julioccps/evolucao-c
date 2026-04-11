@@ -17,10 +17,17 @@ typedef struct{
 typedef struct{
     posicao_t posicao;
     cor_t cor;
+    uint16_t indice_proximo;
 } criatura_t;
 
-void processar(criatura_t *criaturas, cor_t *cor);
+void processar();
 
-criatura_t* gerar_criaturas(uint16_t tamanho);
+void iniciar_criaturas(uint16_t tamanho);
+
+criatura_t* obter_criaturas();
+
+cor_t* obter_cor_ambiente();
+
+void finalizar_criaturas();
 
 #endif
