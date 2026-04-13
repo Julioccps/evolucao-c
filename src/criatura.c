@@ -60,12 +60,12 @@ void iniciar_criaturas(uint16_t tamanho) {
 
 double calcular_probabilidade_morte(cor_t cor1, cor_t cor2) {
 	double dr = (double)cor1.r - (double)cor2.r;
-    double dg = (double)cor1.g - (double)cor2.g;
-    double db = (double)cor1.b - (double)cor2.b;
-    
-    double distancia = sqrt(dr * dr + dg * dg + db * db);
-    
-    return distancia / 441.6729;
+	double dg = (double)cor1.g - (double)cor2.g;
+	double db = (double)cor1.b - (double)cor2.b;
+
+	double distancia = sqrt(dr * dr + dg * dg + db * db);
+
+	return distancia / 441.6729;
 }
 
 void remover_criatura(uint16_t i, uint16_t i_anterior) {
