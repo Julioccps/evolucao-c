@@ -3,6 +3,6 @@
 
 #include "criatura.h"
 
-void atualizar_interface(criatura_t criaturas[], cor_t *cor);
+void atualizar_interface(contexto_t *contexto);
 
 #endif

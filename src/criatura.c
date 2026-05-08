@@ -34,28 +34,17 @@ criatura_t criar_criatura(uint16_t indice_proximo) {
 	return criatura;
 }
 
-uint16_t *tamanho_maximo;
-criatura_t *criaturas;
-uint16_t *i_criatura_inicial;
-cor_t *cor;
-uint16_t *pilha;
-uint16_t *i_topo;
+contexto_t *iniciar_criaturas() {
+	contexto_t *contexto = malloc(sizeof(contexto_t));
 
-void iniciar_criaturas(uint16_t tamanho) {
-	srand(time(NULL));
-	tamanho_maximo = malloc(sizeof(uint16_t));
-	*tamanho_maximo = tamanho;
-	criaturas = malloc(tamanho * sizeof(criatura_t));
-	for (int i = 0; i < tamanho; i++) {
+	contexto->cor = gerar_cor_aleatoria();
+	contexto->i_topo = 0;
+	contexto->i_criatura_inicial = 0;
+	criatura_t *criaturas = contexto->criaturas;
+	for (int i = 0; i < MAXIMO_CRIATURAS; i++) {
 		criaturas[i] = criar_criatura(i + 1);
 	}
-	i_criatura_inicial = malloc(sizeof(uint16_t));
-	*i_criatura_inicial = 0;
-	cor = malloc(sizeof(cor_t));
-	*cor = gerar_cor_aleatoria();
-	pilha = malloc(tamanho * sizeof(uint16_t));
-	i_topo = malloc(sizeof(uint16_t));
-	*i_topo = 0;
+	return contexto;
 };
 
 double calcular_probabilidade_morte(cor_t cor1, cor_t cor2) {
@@ -68,13 +57,13 @@ double calcular_probabilidade_morte(cor_t cor1, cor_t cor2) {
 	return distancia / 441.6729;
 }
 
-void remover_criatura(uint16_t i, uint16_t i_anterior) {
-	if (i == *i_criatura_inicial) {
-		*i_criatura_inicial = criaturas[i].indice_proximo;	
+void remover_criatura(contexto_t *contexto, uint16_t i, uint16_t i_anterior) {
+	if (i == contexto->i_criatura_inicial) {
+		contexto->i_criatura_inicial = contexto->criaturas[i].indice_proximo;	
 	} else {
-		criaturas[i_anterior].indice_proximo = criaturas[i].indice_proximo;
+		contexto->criaturas[i_anterior].indice_proximo = contexto->criaturas[i].indice_proximo;
 	}
-	pilha[*i_topo++] = i;
+	contexto->pilha[contexto->i_topo++] = i;
 }
 
 int clamp(int valor, int min, int max) {
@@ -104,9 +93,13 @@ int gerar_valor_aleatorio_gaussiano() {
 	return valor_aleatorio;
 }
 
-void reproduzir_criatura(criatura_t criatura_pai) {
+void reproduzir_criatura(contexto_t *contexto, uint16_t i_criatura_pai) {
+	criatura_t *criaturas = contexto->criaturas;
+	uint16_t *pilha = contexto->pilha;
+	criatura_t criatura_pai = criaturas[i_criatura_pai];
 	cor_t cor_pai = criatura_pai.cor;
 	posicao_t posicao_pai = criatura_pai.posicao;
+	uint16_t i_criatura_inicial = contexto->i_criatura_inicial;
 	criatura_t criatura_filho = {
 		{
 			clamp(posicao_pai.x + gerar_valor_aleatorio_gaussiano(), 0, 1000),
@@ -117,47 +110,39 @@ void reproduzir_criatura(criatura_t criatura_pai) {
 			clamp(cor_pai.g + gerar_valor_aleatorio_gaussiano(), 0, 255),
 			clamp(cor_pai.b + gerar_valor_aleatorio_gaussiano(), 0, 255)
 		},
-		*i_criatura_inicial
+		i_criatura_inicial
 	};
-	uint16_t i_gravacao = pilha[--*i_topo];
+	uint16_t i_gravacao = pilha[--contexto->i_topo];
 	criaturas[i_gravacao] = criatura_filho;
-	*i_criatura_inicial = i_gravacao;
+	contexto->i_criatura_inicial = i_gravacao;
 }
 
-void reproduzir_criaturas(uint16_t i_criatura) {
-	if (*i_topo > 0) {
-		for (int j = 0; j < (1 + rand()%2); j++) {
-			reproduzir_criatura(criaturas[i_criatura]);	
+void reproduzir_criaturas(contexto_t *contexto, uint16_t i_criatura) {
+	criatura_t *criaturas = contexto->criaturas;
+	for (int j = 0; j < (1 + rand()%2); j++) {
+		if (contexto->i_topo > 0) {
+			reproduzir_criatura(contexto, i_criatura);
 		}
 	}
 }
 
-void processar_criaturas() {
-	uint16_t i_anterior = *i_criatura_inicial;
-	uint16_t i = *i_criatura_inicial;
-	while (i != *tamanho_maximo) {
+void processar_criaturas(contexto_t *contexto) {
+	uint16_t i_anterior = contexto->i_criatura_inicial;
+	uint16_t i = i_anterior;
+	criatura_t *criaturas = contexto->criaturas;
+	uint16_t *pilha = contexto->pilha;
+	for (int j; j < MAXIMO_CRIATURAS; j ++) {
 		cor_t cor_criatura = criaturas[i].cor;
-		double probabilidade_morte = calcular_probabilidade_morte(*cor, cor_criatura);
-		printf("%f\n", gerar_valor_aleatorio());
+		double probabilidade_morte = calcular_probabilidade_morte(contexto->cor, cor_criatura);
 		if (gerar_valor_aleatorio() < probabilidade_morte) {
-			printf("criatura removida\n");
-			remover_criatura(i, i_anterior);
+			remover_criatura(contexto, i, i_anterior);
 		} else {
-			printf("criatura reproduzida\n");
-			reproduzir_criaturas(i);
+			reproduzir_criaturas(contexto, i);
 		}
 		i = criaturas[i].indice_proximo;
 	}
 }
 
-void processar() {
-	processar_criaturas();
-}
-
-criatura_t* obter_criaturas() {
-	return criaturas;
-}
-
-cor_t* obter_cor_ambiente() {
-	return cor;
+void processar(contexto_t *contexto) {
+	processar_criaturas(contexto);
 }

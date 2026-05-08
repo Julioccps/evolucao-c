@@ -1,4 +1,6 @@
 #include "grafico.h"
 #include "stdio.h"
 
-//void atualizar_graficos(criatura_t criaturas[], cor_t *cor) {}
+void atualizar_graficos(contexto_t *contexto) {
+
+}
