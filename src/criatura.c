@@ -168,6 +168,7 @@ void processar(contexto_t *contexto) {
 	realocar_criaturas(contexto);
 	if (contexto->limite == 0) {
 		*contexto = gerar_criaturas();
+		printf("Todas as criaturas morreram, regerando as criaturas\n");
 	} else {
 		reproduzir_criaturas(contexto);
 	}
