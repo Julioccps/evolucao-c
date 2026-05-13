@@ -1,9 +1,15 @@
-#include <stdint.h>
-
 #ifndef CRIATURA_H
 #define CRIATURA_H
 
-#define MAXIMO_CRIATURAS 64
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+
+#define MAXIMO_CRIATURAS 16384
+#define ALTURA_AMBIENTE 600
+#define LARGURA_AMBIENTE 1000
 
 typedef struct {
     uint16_t x;
@@ -19,21 +25,19 @@ typedef struct{
 typedef struct{
     posicao_t posicao;
     cor_t cor;
-    uint16_t indice_proximo;
+    uint8_t vivo;
 } criatura_t;
 
 typedef struct{
     criatura_t criaturas[MAXIMO_CRIATURAS];
-    uint16_t pilha[MAXIMO_CRIATURAS];
-    uint16_t i_criatura_inicial;
-    uint16_t i_topo;
+    uint16_t limite;
     cor_t cor;
 } contexto_t;
 
 void processar();
 
-contexto_t *iniciar_criaturas();
+contexto_t *inicializar_criaturas();
 
-void finalizar_criaturas(contexto_t contexto);
+void finalizar_criaturas(contexto_t *contexto);
 
 #endif

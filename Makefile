@@ -1,24 +1,27 @@
-CC 		:= gcc
+CC := gcc
 
-INCLUDE_DIR 	:= include
-SRC_DIR 	:= src
-BUILD_DIR 	:= build
+INCLUDE_DIR := include
+SRC_DIR := src
+BUILD_DIR := build
 
-CCFLAGS 	:= -Wall -Wextra -O2 -I$(INCLUDE_DIR)
+CFLAGS := -Wall -Wextra -O2 -I$(INCLUDE_DIR)
+SDLFLAGS := $(shell sdl2-config --cflags --libs)
 
-SRCS 		:= $(SRC_DIR)/main.c $(SRC_DIR)/criatura.c $(SRC_DIR)/grafico.c
-OBJS 		:= $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
-TARGET		:= $(BUILD_DIR)/evolucao
+SRCS := $(SRC_DIR)/main.c $(SRC_DIR)/criatura.c $(SRC_DIR)/grafico.c
+OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+
+TARGET := $(BUILD_DIR)/evolucao
 
 .PHONY: all clean
 
-all : $(TARGET)
+all: $(TARGET)
 
-$(TARGET) : $(OBJS)
-	$(CC) $(CCFLAGS) -o $@ $^
-$(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(SDLFLAGS)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
-	$(CC) $(CCFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(SDLFLAGS) -c $< -o $@
 
-clean :
+clean:
 	rm -rf $(BUILD_DIR)

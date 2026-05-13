@@ -5,13 +5,18 @@
 
 int main(){
 	srand(time(NULL));
-	contexto_t *contexto = iniciar_criaturas();
-	
-	int rodadas = 100000;
-	while (rodadas-- > 0){
+	contexto_t *contexto = inicializar_criaturas();
+	interface_t *interface = inicializar_interface();
+
+	int executando = 1;
+	while (executando){
 		processar(contexto);
-		atualizar_interface(contexto);
+		atualizar_interface(interface, contexto);
+		executando = analizar_eventos();
 	}
+
+	finalizar_criaturas(contexto);
+	finalizar_interface(interface);
 	
 	return 0;
 }
