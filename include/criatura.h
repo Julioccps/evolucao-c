@@ -7,7 +7,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define MAXIMO_CRIATURAS 16384
+#define MAXIMO_CRIATURAS 65535
 #define ALTURA_AMBIENTE 600
 #define LARGURA_AMBIENTE 1000
 
