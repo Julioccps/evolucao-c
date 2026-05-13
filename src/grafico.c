@@ -92,6 +92,13 @@ int analizar_eventos() {
         if (evento.type == SDL_QUIT) {
             rodando = 0;
         }
+        if (evento.type == SDL_KEYDOWN) {
+            switch (evento.key.keysym.sym) {
+                case SDLK_SPACE:
+                    rodando = 2;
+                    break;
+            }
+        }
     }
     return rodando;
 }

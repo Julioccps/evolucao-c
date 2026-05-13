@@ -12,7 +12,11 @@ int main(){
 	while (executando){
 		processar(contexto);
 		atualizar_interface(interface, contexto);
-		executando = analizar_eventos();
+		int evento = analizar_eventos();
+		if (evento == 2) {
+			gerar_nova_cor_ambiente(contexto);
+		}
+		executando = evento > 0;
 	}
 
 	finalizar_criaturas(contexto);

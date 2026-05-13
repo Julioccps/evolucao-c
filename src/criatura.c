@@ -89,13 +89,13 @@ criatura_t reproduzir_criatura(criatura_t criatura) {
 	cor_t cor = criatura.cor;
 	criatura_t criatura_filho = {
 		{
-			clamp(posicao.x + gerar_valor_aleatorio_gaussiano()*3, 0, LARGURA_AMBIENTE-1),
-			clamp(posicao.y + gerar_valor_aleatorio_gaussiano()*3, 0, ALTURA_AMBIENTE-1),
+			clamp(posicao.x + gerar_valor_aleatorio_gaussiano()*5, 0, LARGURA_AMBIENTE-1),
+			clamp(posicao.y + gerar_valor_aleatorio_gaussiano()*5, 0, ALTURA_AMBIENTE-1),
 		},
 		{
-			clamp(cor.r + gerar_valor_aleatorio_gaussiano(), 0, 256),
-			clamp(cor.g + gerar_valor_aleatorio_gaussiano(), 0, 256),
-			clamp(cor.b + gerar_valor_aleatorio_gaussiano(), 0, 256)
+			clamp(cor.r + gerar_valor_aleatorio_gaussiano(), 0, 255),
+			clamp(cor.g + gerar_valor_aleatorio_gaussiano(), 0, 255),
+			clamp(cor.b + gerar_valor_aleatorio_gaussiano(), 0, 255)
 		},
 		1
 	};
@@ -159,12 +159,15 @@ void reproduzir_criaturas(contexto_t *contexto) {
 	}
 }
 
+void gerar_nova_cor_ambiente(contexto_t *contexto) {
+	contexto->cor = gerar_cor_aleatoria();
+}
+
 void processar(contexto_t *contexto) {
 	remover_criaturas(contexto);
 	realocar_criaturas(contexto);
 	if (contexto->limite == 0) {
 		*contexto = gerar_criaturas();
-		printf("Morraram\n");
 	} else {
 		reproduzir_criaturas(contexto);
 	}
