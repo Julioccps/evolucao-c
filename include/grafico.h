@@ -13,6 +13,8 @@ interface_t* inicializar_interface();
 
 void atualizar_interface(interface_t *interface, contexto_t *contexto);
 
+void atualizar_titulo_interface(interface_t *interface, unsigned long processamentos_por_segundo);
+
 void finalizar_interface(interface_t *interface);
 
 int analizar_eventos();

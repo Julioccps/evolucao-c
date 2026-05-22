@@ -1,5 +1,7 @@
 #include "grafico.h"
 
+#include <stdio.h>
+
 #define TAM_QUADRADO 10
 #define TAM_BORDA 2
 
@@ -83,6 +85,17 @@ void atualizar_interface(interface_t *interface, contexto_t *contexto_t) {
         desenharQuadrado(interface->renderizador, contexto_t->criaturas[i]);
     }
     SDL_RenderPresent(interface->renderizador);
+}
+
+void atualizar_titulo_interface(interface_t *interface, unsigned long processamentos_por_segundo) {
+    char titulo[64];
+    snprintf(
+        titulo,
+        sizeof(titulo),
+        "Quadrados - %lu processamentos/s",
+        processamentos_por_segundo
+    );
+    SDL_SetWindowTitle(interface->janela, titulo);
 }
 
 int analizar_eventos() {

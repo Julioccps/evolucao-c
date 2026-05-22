@@ -1,5 +1,11 @@
 #include "criatura.h"
 
+#define QUANTIDADE_VALORES_GAUSSIANOS 10
+
+static const int VALORES_GAUSSIANOS[QUANTIDADE_VALORES_GAUSSIANOS] = {
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+};
+
 posicao_t gerar_posicao_aleatoria() {
 	posicao_t posicao = {
 		rand()%LARGURA_AMBIENTE,
@@ -73,13 +79,12 @@ int clamp(int valor, int min, int max) {
 
 // Já que não posso usar float em valor de cores, vou ter que brincar aqui...
 int gerar_valor_aleatorio_gaussiano() {
-	int valores[10] = {0, 0, 0, 0, 0, 0, 0, 1, 1, 2};
-	int i = rand()%10;
+	int i = rand()%QUANTIDADE_VALORES_GAUSSIANOS;
 	int valor_aleatorio;
 	if (rand()%2) {
-		valor_aleatorio = valores[i];
+		valor_aleatorio = VALORES_GAUSSIANOS[i];
 	} else {
-		valor_aleatorio = -valores[i];
+		valor_aleatorio = -VALORES_GAUSSIANOS[i];
 	}
 	return valor_aleatorio;
 }

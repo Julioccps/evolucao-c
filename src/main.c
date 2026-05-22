@@ -15,13 +15,26 @@ int main() {
 
 	const double intervalo = 1.0 / 60.0;
 	clock_t ultimo_update = clock();
+	clock_t ultima_atualizacao_titulo = clock();
+	unsigned long processamentos = 0;
 
 	while (executando) {
 		processar(contexto);
+		processamentos++;
 
 		clock_t agora = clock();
 		double tempo_passado =
 			(double)(agora - ultimo_update) / CLOCKS_PER_SEC;
+		double tempo_titulo =
+			(double)(agora - ultima_atualizacao_titulo) / CLOCKS_PER_SEC;
+
+		if (tempo_titulo >= 1.0) {
+			unsigned long processamentos_por_segundo =
+				(unsigned long)(processamentos / tempo_titulo);
+			atualizar_titulo_interface(interface, processamentos_por_segundo);
+			processamentos = 0;
+			ultima_atualizacao_titulo = agora;
+		}
 
 		if (tempo_passado >= intervalo) {
 
